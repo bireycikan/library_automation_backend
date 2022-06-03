@@ -1,8 +1,16 @@
+import Joi from "joi";
 import express from "express";
 const router = express.Router();
 
 // postgresql client
 import { pool } from "../db/postgresql/index.js"
+
+
+// user schema definition
+const userSchema = Joi.object({
+  name: Joi.string().required()
+})
+
 
 /**
  * List of Users
@@ -54,15 +62,14 @@ router.get("/:id", async (req, res) => {
  */
 router.post("/", async (req, res) => {
   try {
-    const { name } = req.body;
+    try {
+      const value = await userSchema.validateAsync(req.body);
+      const result = await pool.query("insert into Users (userName) values ($1)", [value.name]);
 
-    if (!name) {
-      return res.status(400).json({ message: "name field is missing" })
+      res.status(201).json({ message: "User was added successfuly" })
+    } catch (err) {
+      throw err;
     }
-
-    const result = await pool.query("insert into Users (userName) values ($1)", [name]);
-
-    res.status(200).json({ message: "User was added successfuly" })
   } catch (err) {
     res.status(400).json({ message: "Something failed", details: err });
   }
