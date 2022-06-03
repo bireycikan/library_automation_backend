@@ -10,6 +10,11 @@ const serverDebug = debug("server")
 app.use(bodyParser.json())
 
 
+// routes
+import { mountRoutes } from "./routes/index.js";
+mountRoutes(app);
+
+
 // connect to postgresql database
 import db from "./db/postgresql/index.js";
 db.connect();
