@@ -1,9 +1,9 @@
 import { Application } from "express";
-import userRoute from "./user.js";
-import bookRoute from "./book.js";
+import userRoutes from "./user.js";
+import bookRoutes from "./book.js";
 
 
 export const mountRoutes = (app: Application) => {
-  app.use("/users", userRoute);
-  app.use("/books", bookRoute);
+  app.use("/users", userRoutes);
+  app.use("/books", bookRoutes);
 }
