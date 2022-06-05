@@ -5,9 +5,9 @@
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
-    "server:build": "tsc -w",
+    "server:build": "tsc",
     "server:start": "nodemon dist/server.js",
-    "start": "DEBUG=server concurrently npm:server:*"
+    "start": "export DEBUG=server && concurrently npm:server:*"
   },
   "keywords": [],
   "author": "",
