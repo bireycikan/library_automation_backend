@@ -2,6 +2,9 @@ import Joi from "joi";
 import express from "express";
 const router = express.Router();
 
+// middlewares
+import { checkUserID } from "../middlewares/checkUserId.js";
+
 // postgresql client
 import { pool } from "../db/postgresql/index.js"
 
@@ -35,15 +38,9 @@ router.get("/", async (req, res) => {
  * List specific User
  * GET /users/:id
  */
-router.get("/:id", async (req, res) => {
+router.get("/:id", checkUserID, async (req, res) => {
   try {
-    const userId = req.params.id;
-
-    if (!userId) {
-      return res.status(400).json({ message: "user id must be supplied in the route" });
-    }
-
-    const result = await pool.query("select * from Users where id = $1", [userId]);
+    const result = await pool.query("select * from Users where id = $1", [req.params.id]);
     if (!result.rowCount) {
       return res.status(200).json({ message: "No user found with given id" })
     }
