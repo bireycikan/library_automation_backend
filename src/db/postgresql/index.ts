@@ -19,6 +19,15 @@ const config = {
 // export const client = new Client(config);
 export const pool = new Pool(config)
 
+// listening pool events
+pool.on("connect", (client) => {
+  dbDebug("Database connection is established successfully!");
+})
+
+pool.on("error", (err, client) => {
+  dbDebug("DB error raised: more info => %O, client: %O", err, client)
+})
+
 interface IDB {
   connect: () => Promise<void>;
 }
@@ -27,9 +36,8 @@ const db: IDB = {
   connect: async function (): Promise<void> {
     try {
       await pool.connect();
-      dbDebug("Database connection is established successfuly!");
     } catch (err) {
-      dbDebug("Something failed while connection to database: more info => %o", err)
+      dbDebug("Something failed while connecting to the database: more info => %O", err)
     }
   },
 }
