@@ -3,8 +3,7 @@ import bodyParser from "body-parser";
 import express from "express";
 const app = express();
 
-import debug from "debug";
-const serverDebug = debug("server")
+import { serverDebug } from "./debug/serverDebug.js";
 
 // middlewares
 app.use(bodyParser.json())
