@@ -1,22 +1,10 @@
 import http from "http";
-import bodyParser from "body-parser";
-import express from "express";
-const app = express();
-
+import postgresDB from "./db/postgresql/index.js";
+import app from "./app.js";
 import { serverDebug } from "./debug/serverDebug.js";
 
-// middlewares
-app.use(bodyParser.json())
-
-
-// routes
-import { mountRoutes } from "./routes/index.js";
-mountRoutes(app);
-
-
 // connect to postgresql database
-import db from "./db/postgresql/index.js";
-db.connect();
+postgresDB.connect();
 
 
 // create server
