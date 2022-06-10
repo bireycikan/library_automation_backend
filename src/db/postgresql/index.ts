@@ -1,8 +1,8 @@
 import "dotenv/config";
-import debug from "debug";
-const dbDebug = debug("postgresql");
-
 import pg from "pg";
+import { dbDebug } from "../../debug/postgresqlDebug.js";
+import { retryConnection } from "./helpers/retryConnection.js";
+
 const { Pool, Client } = pg;
 
 const { POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } = process.env;
@@ -38,6 +38,12 @@ const db: IDB = {
       await pool.connect();
     } catch (err) {
       dbDebug("Something failed while connecting to the database: more info => %O", err)
+      try {
+        const result = await retryConnection(pool, 5);
+        dbDebug(result);
+      } catch (err) {
+        dbDebug(err);
+      }
     }
   },
 }
