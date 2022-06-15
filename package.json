@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "server-start": "export DEBUG=server,postgresql && npm run build && nodemon dist/server.js",
+    "server-start": "export DEBUG=server,postgresql && nodemon dist/server.js",
     "start": "export DEBUG=server,postgresql && concurrently -n 'POSTGRES,SERVER' -c 'bgRed.bold,bgGreen.bold' 'npm run docker-postgres' 'npm run server-start'",
-    "docker-postgres": "dotenv -- cross-var docker run -d -p %POSTGRES_PORT%:5432 -e POSTGRES_DB=%POSTGRES_DB% -e POSTGRES_USER=%POSTGRES_USER% -e POSTGRES_PASSWORD=%POSTGRES_PASSWORD% -v %POSTGRES_LOCAL_DATA_VOLUME%:/var/lib/postgresql/data --name postgresql_local postgres:%POSTGRES_TAG%"
+    "docker-postgres": "dotenv -- cross-var docker run -d -p %POSTGRES_PORT%:5432 -e POSTGRES_DB=%POSTGRES_DB% -e POSTGRES_USER=%POSTGRES_USER% -e POSTGRES_PASSWORD=%POSTGRES_PASSWORD% -v %POSTGRES_LOCAL_DATA_VOLUME%:/var/lib/postgresql/data --net birey_deneme --name postgresql_local postgres:%POSTGRES_TAG%"
   },
   "keywords": [],
   "author": "",
